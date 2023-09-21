@@ -177,9 +177,9 @@ class words_book():
             for i in range(group // 2, group):
                 _word = self.words[self.learned + i]
                 _word.times += 1
-                self.learned += 1
+                
                 words_group.append(_word)
-
+            self.learned += (group - group // 2)
         elif new:
             for i in range(group):
                 _word = self.words[self.learned + i]
@@ -209,7 +209,7 @@ class words_book():
         
 # words_book(words_list=words_list, name="CET6-1500")
 studying = study_on(words_book(file="data\CET6-1500.xlsx"))
-studying.learn(group=5)
+studying.learn(group=10)
 
 
 
