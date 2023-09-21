@@ -82,7 +82,7 @@ class chat:
         
         f.seek(0)
         f.writelines(json.dumps(log) +"\n")
-
+        f.close()
 class GPT:
     def calculate_price(completion):
         rate = 7.29 

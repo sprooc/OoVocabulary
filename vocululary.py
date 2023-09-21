@@ -10,14 +10,18 @@ class study_on():
     def __init__(self, words_book):
         self.words_book = words_book
         self.chat = chat()
-    def story(self, words, style = None):
-        # content = "You are a senior language expert who can create interesting English stories using the new words from the list I provided. When the new word appear in the story,the new word should followed by its English pronunciation, part of speech, and Chinese meaning. Then you will list all the new words, provide their English pronunciation, part of speech, and Chinese meaning. Here is the list of new words I provided: "
-        # for word in words:
-        #     content += (word.word + " ")
-        # message = [{"role": "user",
-        #             "content": content}]
-        # print(self.chat.send_message(message))
-        print("this is a stroy")
+    def story(self, words, style = "interesting", about = ""):
+        for _word in words:
+            print(_word.translation)
+        if len(about) > 0:
+            about = "about " + about
+        content = "Create an {0} English story {1} in {2} using the words from the list: ".format(style, about, len(words) * 10)
+        for word in words:
+            content += (word.word + " ")
+        message = [{"role": "user",
+                    "content": content}]
+        print(self.chat.send_message(message))
+        #print("this is a stroy")
 
     def learn(self, group=5, new= True, review=True):
         cmds = 'story'
@@ -28,13 +32,20 @@ class study_on():
             arg = None if len(cmds) == 1 else cmds[1]
             if cmd == 'story':
                 words_group = self.words_book.generate_group(group, new, review)
-                self.story(words_group)
+                style = input("The style of the story: (Press ENTER to pass)")
+                about = input("You hope the story is about: (Press ENTER to pass)")
+                self.story(words_group, style, about)
                 cmds = input()
                 continue
             if cmd == 'search':
                 _word = self.words_book.search(arg)
-                print(_word.translation)
-                _word.read()
+                if _word != None:
+                    print(_word.translation)
+                    _word.read()
+                else:
+                    nword = word(0, arg)
+                    nword.translate()
+                    nword.read()
                 cmds = input()
                 continue
             if cmd == 'spell':
@@ -57,7 +68,8 @@ class study_on():
             if cmd == 'quit':
                 self.words_book.save()
                 return
-    
+            cmds = input()
+
     def spell_group(self, group):
         lenth = len(group)
         passed = [False for _ in range(lenth)]
@@ -197,7 +209,7 @@ class words_book():
         
 # words_book(words_list=words_list, name="CET6-1500")
 studying = study_on(words_book(file="data\CET6-1500.xlsx"))
-studying.learn(group=2, review=False)
+studying.learn(group=5)
 
 
 
